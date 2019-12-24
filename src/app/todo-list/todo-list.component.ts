@@ -5,6 +5,8 @@ import { TodoListService } from './todo-list.service';
 // class
 import { Todo } from './todo.model';
 
+import { TodoStatusType } from './todo-status-type.enum';
+
 @Component({
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
@@ -12,6 +14,8 @@ import { Todo } from './todo.model';
 })
 export class TodoListComponent implements OnInit {
   constructor(private todoListService: TodoListService) {}
+  todoStatusType = TodoStatusType;
+  private status = TodoStatusType.All;
 
   ngOnInit() {
   }
@@ -25,15 +29,27 @@ export class TodoListComponent implements OnInit {
   }
 
   getList(): Todo[] {
-    return this.todoListService.getList();
-  }
+    let list: Todo[] = [];
+    switch (this.status) {
+      case TodoStatusType.Active:
+        list = this.getRemainingList();
+        break;
+      case TodoStatusType.Completed:
+        list = this.getCompletedList();
+        break;
+      default:
+        list = this.todoListService.getList();
+        break;
+      }
+    console.log(list);
+    return list;
+}
 
   remove(index: number): void {
     this.todoListService.remove(index);
   }
 
   edit(todo: Todo): void {
-    console.log(todo);
     todo.editable = true;
   }
 
@@ -59,5 +75,44 @@ export class TodoListComponent implements OnInit {
 
   cancelEditing(todo: Todo): void {
     todo.editable = false;
+  }
+
+  // 取得未完成清單
+  getRemainingList(): Todo[] {
+    return this.todoListService.getWithCompleted(false);
+  }
+
+  // 取得已完成清單
+  getCompletedList(): Todo[] {
+    return this.todoListService.getWithCompleted(true);
+  }
+
+  setStatus(status: number): void {
+    this.status = status;
+  }
+
+  checkStatus(status: number): boolean {
+    return this.status === status;
+  }
+
+  removeCompleted(): void {
+    this.todoListService.removeCompleted();
+  }
+
+  // 取得所有清單
+  getAllList(): Todo[] {
+    return this.todoListService.getList();
+  }
+
+  // 判斷是否全部都完成
+  allCompleted(): boolean {
+    return this.getAllList().length === this.getCompletedList().length;
+  }
+
+  // 全部設定
+  setAllTo(completed: boolean): void {
+    this.getAllList().forEach((todo) => {
+      todo.setCompleted(completed);
+    });
   }
 }
