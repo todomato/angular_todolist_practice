@@ -195,7 +195,7 @@
 }
 
 .todo-list li .destroy:after {
-	content: 'กั';
+	content: 'x';
 }
 
 .todo-list li:hover .destroy {

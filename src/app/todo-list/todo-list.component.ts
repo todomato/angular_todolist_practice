@@ -27,9 +27,9 @@ export class TodoListComponent implements OnInit {
   getList(): Todo[] {
     return this.todoListService.getList();
   }
-  // addTodo(inputRef: HTMLInputElement): void {
-  //   console.log(inputRef.value);
-  //   inputRef.value = '';
-  // }
+
+  remove(index: number): void {
+    this.todoListService.remove(index);
+  }
 
 }

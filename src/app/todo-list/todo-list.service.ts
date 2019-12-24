@@ -19,4 +19,8 @@ export class TodoListService {
     }
   }
 
+  remove(index: number): void{
+    this.list.splice(index, 1);
+  }
+
 }

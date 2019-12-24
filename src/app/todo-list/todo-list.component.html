@@ -9,11 +9,11 @@
       (keyup.enter) = "addTodo($event.target)"
     >
   </header>
-<!-- æ¸…å–®å€åŸŸé–‹å§‹ -->
+<!-- ²M³æ°Ï°ì¶}©l -->
 <section class="main" *ngIf="getList().length">
 
   <ul class="todo-list">
-    <li *ngFor="let todo of getList()"
+    <li *ngFor="let todo of getList(); let i = index;"
     [class.completed]="todo.done">
       <div class="view">
         <input
@@ -22,11 +22,11 @@
         (click) = "todo.toggleCompletion()"
         [checked]="todo.done"
         >
-        <label>{{todo.getTitle()}}{{todo.done.value}}</label>
-        <button class="destroy"></button>
+        <label>{{todo.getTitle()}}</label>
+        <button (click) = "remove(i)" class="destroy"></button>
       </div>
     </li>
   </ul>
 </section>
-<!-- æ¸…å–®å€åŸŸçµæŸ -->
+<!-- ²M³æ°Ï°ìµ²§ô -->
 </section>
